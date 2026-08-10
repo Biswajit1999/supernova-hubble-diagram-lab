@@ -41,3 +41,7 @@ Representative binned distance-modulus anchors for browser validation against pu
 
 - Riess, A.G. et al., 1998. Observational evidence from supernovae for an accelerating universe and a cosmological constant. The Astronomical Journal, 116(3), pp.1009-1038.
 - Scolnic, D.M. et al., 2018. The complete light-curve sample of spectroscopically confirmed SNe Ia from Pan-STARRS1 and cosmological constraints from the combined Pantheon sample. The Astrophysical Journal, 859(2), p.101.
+
+## Research Quality Upgrade
+
+See [RESEARCH_QUALITY.md](RESEARCH_QUALITY.md) for the validation layer, reference anchors, equations and research boundaries added to this repository.
