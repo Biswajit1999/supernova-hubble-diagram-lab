@@ -4,7 +4,7 @@ This repository has been upgraded with a compact research-quality layer: referen
 
 ## Scope
 
-supernova-hubble-diagram-lab upgraded with reproducibility metadata and validation.
+Private Type Ia supernova Hubble-diagram lab with LCDM distance-modulus simulations and reference anchors.
 
 ## Equations And Models
 

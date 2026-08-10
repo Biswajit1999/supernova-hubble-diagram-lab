@@ -1,6 +1,6 @@
 {
   "title": "supernova hubble diagram lab",
-  "description": "supernova-hubble-diagram-lab upgraded with reproducibility metadata and validation.",
+  "description": "Private Type Ia supernova Hubble-diagram lab with LCDM distance-modulus simulations and reference anchors.",
   "equations": [
     "Repository metadata completeness",
     "Reference-data finite anchor validation",
