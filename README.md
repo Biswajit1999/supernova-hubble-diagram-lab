@@ -79,10 +79,14 @@ is an adjustable magnitude offset representing residual calibration/standardizat
 
 ## How It Works
 
-1. **Reference data.** `data/reference.json` stores five binned Type Ia distance-modulus anchors
-   (styled after the Pantheon compilation, Scolnic et al. 2018) spanning `z = 0.03` to `z = 1`.
-   These load and render first, before any simulation runs, so the model is always shown against
-   real published structure.
+1. **Reference data.** `data/reference.json` stores a 180-supernova stratified subsample drawn
+   directly from the public **Pantheon+SH0ES** data release (Scolnic et al. 2022; Brout et al.
+   2022; `PantheonPlusSH0ES/DataRelease` on GitHub), spanning the full survey redshift range
+   `z = 0.0012` to `z = 2.26`, with each point's real 1-sigma distance-modulus uncertainty
+   (`MU_SH0ES_ERR_DIAG`) carried through and rendered as an error bar. These 1701 real,
+   individually-fit supernovae (subsampled to 180 for browser rendering) load and render first,
+   before any simulation runs, so the model is always shown against actual observational data
+   rather than a synthetic stand-in.
 2. **Interactive parameters.** `app.js` builds range-slider controls for `H0`, `Omega_m`, a
    magnitude offset `M_bias`, and an intrinsic scatter term, all defined in the `LAB.controls`
    table.
@@ -175,8 +179,24 @@ supernova Hubble diagrams (Pantheon-style, Scolnic et al. 2018).
 - Scolnic, D.M. et al., 2018. The complete light-curve sample of spectroscopically confirmed SNe
   Ia from Pan-STARRS1 and cosmological constraints from the combined Pantheon sample. The
   Astrophysical Journal, 859(2), p.101.
+- Scolnic, D. et al., 2022. The Pantheon+ Analysis: The Full Data Set and Light-curve Release.
+  The Astrophysical Journal, 938(2), p.113. (source of the 180-point reference sample used here;
+  data release: https://github.com/PantheonPlusSH0ES/DataRelease)
+- Brout, D. et al., 2022. The Pantheon+ Analysis: Cosmological Constraints. The Astrophysical
+  Journal, 938(2), p.110.
 - Planck Collaboration, Aghanim, N. et al., 2020. Planck 2018 results. VI. Cosmological
   parameters. Astronomy & Astrophysics, 641, A6.
+
+## Reading the Plot
+
+- **Main panel.** Yellow points are the 180 real Pantheon+SH0ES supernovae, each with a vertical
+  1-sigma error bar from the survey's own light-curve fit uncertainty. The green curve is the
+  live flat-LCDM model at the current slider values.
+- **Fit residuals panel.** Plots `mu_model(z) - mu_observed(z)` for every reference supernova, so
+  systematic mismatch (a slope or offset in the residuals) is visible directly rather than having
+  to eyeball it off the main distance-modulus curve. Points beyond +/-0.3 mag are flagged red.
+- **`ref_rms_mag` telemetry.** The RMS of the residuals above, in magnitudes — a single number
+  for how well the current `H0`/`Omega_m`/`M_bias` combination fits the real data.
 
 ## Research Quality Upgrade
 
