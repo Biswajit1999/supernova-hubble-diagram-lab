@@ -198,6 +198,30 @@ supernova Hubble diagrams (Pantheon-style, Scolnic et al. 2018).
 - **`ref_rms_mag` telemetry.** The RMS of the residuals above, in magnitudes — a single number
   for how well the current `H0`/`Omega_m`/`M_bias` combination fits the real data.
 
+## What the Data Actually Show: Quantifying Cosmic Acceleration
+
+Two more telemetry values go beyond fitting one model curve by hand: `bestfit_omegaM` and
+`acceleration_signal_mag` are computed by an automatic grid search (`accelerationEvidence()`
+in `physicsWorker.js`) that scans `Omega_m` from 0 to 1 at the current `H0`/`M_bias`, finds the
+value that best fits the real 180-supernova sample, and directly compares it to the historically
+important **`Omega_m = 1` matter-only universe** — a purely decelerating expansion with no dark
+energy, which is exactly the model Riess (1998) and Perlmutter (1999) showed was inconsistent
+with real Type Ia data.
+
+- `bestfit_omegaM` is the matter-density fraction that minimises the RMS residual against the
+  real Pantheon+SH0ES points at the current `H0`. (At fixed `H0 = 70`, `M_bias = 0` this lands
+  near `Omega_m ~ 0.48` — higher than the Planck value of `~0.315` because this simple one-parameter
+  grid search does not simultaneously marginalise over `H0`, unlike the full Pantheon+ cosmological
+  fit; the qualitative acceleration signal below is unaffected by that simplification.)
+- `acceleration_signal_mag` is the distance-modulus offset, at `z = 1`, between that best-fit
+  curve and the `Omega_m = 1` matter-only curve. A positive value means the real supernovae sit
+  **farther away (fainter) than a decelerating universe predicts** — the same qualitative
+  signature, read directly off real data, that first indicated the expansion of the universe is
+  accelerating rather than slowing down.
+
+This turns the lab from "here is a curve you can drag sliders on" into "here is what the real
+data rule out, and by how much," using the same logic as the original discovery papers.
+
 ## Research Quality Upgrade
 
 See [RESEARCH_QUALITY.md](RESEARCH_QUALITY.md) for the validation layer, reference anchors,
