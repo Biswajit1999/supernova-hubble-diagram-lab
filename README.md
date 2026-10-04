@@ -221,8 +221,3 @@ with real Type Ia data.
 
 This turns the lab from "here is a curve you can drag sliders on" into "here is what the real
 data rule out, and by how much," using the same logic as the original discovery papers.
-
-## Research Quality Upgrade
-
-See [RESEARCH_QUALITY.md](RESEARCH_QUALITY.md) for the validation layer, reference anchors,
-equations and research boundaries added to this repository.
