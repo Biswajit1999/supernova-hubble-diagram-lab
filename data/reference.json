@@ -2,9 +2,20 @@
   "dataset": "Pantheon+SH0ES Type Ia supernova compilation (stratified subsample)",
   "source": "Scolnic et al. 2022 / Brout et al. 2022 Pantheon+SH0ES data release",
   "source_url": "https://github.com/PantheonPlusSH0ES/DataRelease",
+  "source_file": "Pantheon+_Data/4_DISTANCES_AND_COVAR/Pantheon+SH0ES.dat",
+  "source_file_sha256": "1cb0fc379ef066afdc2ffd1857681cc478024570d8a3eba284fb645775198cf8",
   "citation": "Scolnic, D. et al., 2022. The Pantheon+ Analysis: The Full Data Set and Light-curve Release. ApJ, 938, 113. Brout, D. et al., 2022. The Pantheon+ Analysis: Cosmological Constraints. ApJ, 938, 110.",
   "n_full_sample": 1701,
+  "n_distinct_supernovae": 1550,
   "n_points": 180,
+  "selection": "Sort all 1701 source rows by zHD and select floor(i * (1701 - 1) / (180 - 1)) for i = 0..179.",
+  "columns": {
+    "x": "zHD",
+    "y": "MU_SH0ES",
+    "y_err": "MU_SH0ES_ERR_DIAG",
+    "label": "CID"
+  },
+  "analysis_scope": "Visualization and diagonal-error teaching likelihood only. The official covariance products are not bundled or used.",
   "x_label": "Redshift z (Hubble-diagram frame, zHD)",
   "y_label": "Distance modulus mu (MU_SH0ES)",
   "points": [
