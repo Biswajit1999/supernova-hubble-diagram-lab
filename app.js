@@ -1,18 +1,6 @@
 "use strict";
 
-const COLORS = {
-  ink: "#f4f0e8",
-  muted: "#8f959d",
-  faint: "#535b65",
-  grid: "#252c34",
-  accent: "#ff7a45",
-  accentSoft: "#ffb08b",
-  comparison: "#65b9ff",
-  point: "#ddd7cb",
-  excluded: "#626871",
-  danger: "#ff7676",
-  band: "rgba(101, 185, 255, .11)"
-};
+let COLORS = {};
 
 const elements = {
   omegaM: document.querySelector("#omega-m"),
@@ -34,7 +22,16 @@ const elements = {
   tooltip: document.querySelector("#chart-tooltip"),
   interpretation: document.querySelector("#interpretation-copy"),
   table: document.querySelector("#data-table-body"),
-  download: document.querySelector("#download-csv")
+  download: document.querySelector("#download-csv"),
+  themeToggle: document.querySelector("#theme-toggle"),
+  carousel: document.querySelector("#observation-carousel"),
+  carouselPrevious: document.querySelector("#carousel-previous"),
+  carouselPlay: document.querySelector("#carousel-play"),
+  carouselNext: document.querySelector("#carousel-next"),
+  carouselSlides: [...document.querySelectorAll(".observation-slide")],
+  carouselDots: [...document.querySelectorAll(".carousel-dots button")],
+  carouselIndex: document.querySelector("#carousel-index"),
+  carouselStatus: document.querySelector("#carousel-status")
 };
 
 const worker = new Worker("physicsWorker.js");
@@ -43,12 +40,109 @@ let analysis = null;
 let latestRunId = 0;
 let runTimer = null;
 let hitPoints = [];
+let currentSlide = 0;
+let carouselTimer = null;
+let carouselSuspended = false;
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+let carouselUserPaused = reducedMotion.matches;
 
 const presets = {
   fiducial: { omegaM: 0.3, h0: 70, scatter: 0.1, zMin: 0.01 },
   pantheon: { omegaM: 0.334, h0: 70, scatter: 0.1, zMin: 0.01 },
   matter: { omegaM: 1, h0: 70, scatter: 0.1, zMin: 0.01 }
 };
+
+function syncCanvasColors() {
+  const css = getComputedStyle(document.documentElement);
+  COLORS = {
+    ink: css.getPropertyValue("--ink").trim(),
+    muted: css.getPropertyValue("--muted").trim(),
+    faint: css.getPropertyValue("--faint").trim(),
+    grid: css.getPropertyValue("--line").trim(),
+    accent: css.getPropertyValue("--accent").trim(),
+    accentSoft: css.getPropertyValue("--accent-soft").trim(),
+    comparison: css.getPropertyValue("--comparison").trim(),
+    point: css.getPropertyValue("--point").trim(),
+    excluded: css.getPropertyValue("--faint").trim(),
+    danger: css.getPropertyValue("--danger").trim(),
+    band: css.getPropertyValue("--canvas-band").trim()
+  };
+}
+
+function setTheme(theme, persist = true) {
+  document.documentElement.dataset.theme = theme;
+  if (persist) localStorage.setItem("sn-theme", theme);
+  const isDark = theme === "dark";
+  elements.themeToggle.setAttribute("aria-pressed", String(isDark));
+  elements.themeToggle.setAttribute("aria-label", isDark ? "Switch to light theme" : "Switch to dark theme");
+  syncCanvasColors();
+  requestAnimationFrame(drawAll);
+}
+
+function showSlide(index, announce = false) {
+  currentSlide = (index + elements.carouselSlides.length) % elements.carouselSlides.length;
+  elements.carouselSlides.forEach((slide, slideIndex) => {
+    const active = slideIndex === currentSlide;
+    slide.classList.toggle("is-active", active);
+    slide.setAttribute("aria-hidden", String(!active));
+  });
+  elements.carouselDots.forEach((dot, dotIndex) => {
+    const active = dotIndex === currentSlide;
+    dot.classList.toggle("is-active", active);
+    dot.setAttribute("aria-pressed", String(active));
+  });
+  elements.carouselIndex.textContent = String(currentSlide + 1).padStart(2, "0");
+  if (announce) {
+    const title = elements.carouselSlides[currentSlide].querySelector("h2").textContent;
+    elements.carouselStatus.textContent = `Showing observation ${currentSlide + 1} of ${elements.carouselSlides.length}: ${title}`;
+  }
+}
+
+function restartCarousel() {
+  clearInterval(carouselTimer);
+  if (!carouselUserPaused && !carouselSuspended && !reducedMotion.matches) {
+    carouselTimer = setInterval(() => showSlide(currentSlide + 1), 7000);
+  }
+}
+
+function syncCarouselPauseButton() {
+  const paused = carouselUserPaused || reducedMotion.matches;
+  elements.carouselPlay.classList.toggle("is-paused", paused);
+  elements.carouselPlay.setAttribute("aria-pressed", String(paused));
+  elements.carouselPlay.setAttribute("aria-label", paused ? "Play slideshow" : "Pause slideshow");
+}
+
+function bindCarousel() {
+  const navigate = (offset) => {
+    showSlide(currentSlide + offset, true);
+    restartCarousel();
+  };
+  elements.carouselPrevious.addEventListener("click", () => navigate(-1));
+  elements.carouselNext.addEventListener("click", () => navigate(1));
+  elements.carouselDots.forEach((dot, index) => dot.addEventListener("click", () => {
+    showSlide(index, true);
+    restartCarousel();
+  }));
+  elements.carouselPlay.addEventListener("click", () => {
+    carouselUserPaused = !carouselUserPaused;
+    syncCarouselPauseButton();
+    restartCarousel();
+  });
+  elements.carousel.addEventListener("mouseenter", () => { carouselSuspended = true; restartCarousel(); });
+  elements.carousel.addEventListener("mouseleave", () => { carouselSuspended = false; restartCarousel(); });
+  elements.carousel.addEventListener("focusin", () => { carouselSuspended = true; restartCarousel(); });
+  elements.carousel.addEventListener("focusout", (event) => {
+    if (!elements.carousel.contains(event.relatedTarget)) { carouselSuspended = false; restartCarousel(); }
+  });
+  reducedMotion.addEventListener("change", () => {
+    if (reducedMotion.matches) carouselUserPaused = true;
+    syncCarouselPauseButton();
+    restartCarousel();
+  });
+  showSlide(0);
+  syncCarouselPauseButton();
+  restartCarousel();
+}
 
 function currentParams() {
   return {
@@ -124,6 +218,9 @@ function loadUrlState() {
 }
 
 function bindControls() {
+  elements.themeToggle.addEventListener("click", () => {
+    setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+  });
   [elements.omegaM, elements.h0, elements.scatter, elements.manualOffset].forEach((input) => input.addEventListener("input", scheduleAnalysis));
   [elements.profileOffset, elements.zMin].forEach((input) => input.addEventListener("change", scheduleAnalysis));
   elements.axisScale.addEventListener("change", () => { updateUrl(); drawAll(); });
@@ -278,7 +375,7 @@ function drawProfile() {
   const x = (value) => plot.left + (value - .05) / .95 * (plot.right - plot.left);
   const y = (value) => plot.bottom - Math.min(value, maximumDelta) / maximumDelta * (plot.bottom - plot.top);
 
-  context.fillStyle = "rgba(101, 185, 255, .12)";
+  context.fillStyle = COLORS.band;
   context.fillRect(x(.316), plot.top, x(.352) - x(.316), plot.bottom - plot.top);
   for (let tick = .2; tick <= 1.001; tick += .2) {
     const px = x(tick); context.strokeStyle = COLORS.grid; context.beginPath(); context.moveTo(px, plot.top); context.lineTo(px, plot.bottom); context.stroke(); drawText(context, tick.toFixed(1), px, plot.bottom + 19);
@@ -382,6 +479,8 @@ const resizeObserver = new ResizeObserver(() => requestAnimationFrame(drawAll));
 [elements.hubble, elements.residual, elements.profile].forEach((canvas) => resizeObserver.observe(canvas.parentElement));
 if (document.fonts) document.fonts.ready.then(drawAll);
 
+setTheme(document.documentElement.dataset.theme || "light", false);
+bindCarousel();
 loadUrlState();
 bindControls();
 fetch("data/reference.json")
