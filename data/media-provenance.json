@@ -1,0 +1,42 @@
+{
+  "purpose": "Locally cached, credited observatory imagery used by the educational carousel.",
+  "retrieved": "2026-10-05",
+  "assets": [
+    {
+      "file": "assets/images/sn2014j-swift.jpg",
+      "object": "SN 2014J in Messier 82",
+      "observatory": "NASA Swift / UVOT",
+      "credit": "NASA/Swift/P. Brown, Texas A&M University",
+      "source_page": "https://svs.gsfc.nasa.gov/11459/",
+      "source_asset": "https://svs.gsfc.nasa.gov/vis/a010000/a011400/a011459/M82_uvot_after_SN_large_labeled.jpg",
+      "sha256": "0ea1af8b6f0f2a2f6b18c9f3928645c34ea58ad4e61fcb9e37e27e3593894000"
+    },
+    {
+      "file": "assets/images/sn1987a-webb.png",
+      "object": "Supernova 1987A",
+      "observatory": "James Webb Space Telescope / NIRCam",
+      "credit": "NASA, ESA, CSA, M. Matsuura, R. Arendt, C. Fransson, J. Larsson; processing A. Pagan (STScI)",
+      "source_page": "https://science.nasa.gov/asset/webb/supernova-1987a-nircam-image/",
+      "source_asset": "https://assets.science.nasa.gov/dynamicimage/assets/science/missions/webb/science/2023/08/STScI-01H8Q09TDBCRNH3G22BQS05BHX.png?crop=faces%2Cfocalpoint&fit=clip&h=1050&w=1077",
+      "sha256": "8a96d173eb1a395fa6819204728e36e0de226a37162a4cbf907156d263d7c88b"
+    },
+    {
+      "file": "assets/images/cassiopeia-a-webb.png",
+      "object": "Cassiopeia A",
+      "observatory": "James Webb Space Telescope / NIRCam",
+      "credit": "NASA, ESA, CSA, STScI, D. Milisavljevic, I. De Looze, T. Temim",
+      "source_page": "https://science.nasa.gov/asset/webb/cassiopeia-a-close-ups-nircam-image/",
+      "source_asset": "https://assets.science.nasa.gov/dynamicimage/assets/science/missions/webb/science/2023/12/STScI-01HGH0T1G4S6D57Z6ZPM0JT1GV.png?w=2000",
+      "sha256": "7554e47b811886ba1a21be1707ccc9520052e6a41bd2cb6d88ddf4fedb53c58d"
+    },
+    {
+      "file": "assets/images/veil-nebula-hubble.webp",
+      "object": "Veil Nebula / Cygnus Loop",
+      "observatory": "Hubble Space Telescope / WFC3",
+      "credit": "NASA, ESA, Hubble Heritage Project",
+      "source_page": "https://science.nasa.gov/asset/hubble/veil-nebula-supernova-remnant/",
+      "source_asset": "https://science.nasa.gov/wp-content/uploads/2023/04/hs-2015-29-a-xlarge_web-jpg.webp",
+      "sha256": "a425358a4897056ddf354dc4ad86b56ea0302c3c14bbcb4376f97d6fa6cb1fff"
+    }
+  ]
+}

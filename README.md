@@ -10,6 +10,22 @@ After profiling over an unknown magnitude zero-point, how strongly does the reds
 
 The project is a methods demonstrator. It is designed to make assumptions inspectable and to support intuition-building; it is not a replacement for the Pantheon+ collaboration likelihood.
 
+## Scientific narrative
+
+The opening sequence connects four real observatory views to the measurement problem:
+
+- Swift/UVOT imaging of the Type Ia transient SN 2014J shows the unresolved point source used in light-curve work.
+- Webb/NIRCam views of SN 1987A and Cassiopeia A reveal expanding ejecta and shocked circumstellar material after core collapse.
+- Hubble/WFC3 imaging of the Veil Nebula shows a supernova remnant thousands of years after the explosion.
+
+The interface then follows the analysis chain from photons to a Hubble diagram: observe a transient, standardize a Type Ia light curve, infer relative distance modulus, and compare the redshift–distance relation with flat ΛCDM. The four-image carousel has labelled previous, pause/play, next, and direct-selection controls; it stops on hover or keyboard focus and does not autoplay when reduced motion is requested.
+
+All observatory images are cached locally for a reliable presentation while retaining their official source links and full credits. URLs, retrieval date, and SHA-256 checksums are recorded in [`data/media-provenance.json`](data/media-provenance.json).
+
+## Display modes
+
+Light mode is the default scientific-reading surface, with a dark observatory mode available from the header. The choice is stored locally in the browser, and the canvas charts redraw from the same semantic color tokens so axes, uncertainties, likelihood bands, and comparison lines remain legible in both modes.
+
 ## Data provenance
 
 The official Pantheon+SH0ES distance table contains 1,701 light curves for 1,550 distinct Type Ia supernovae, spanning approximately `z = 0.001–2.26`. The browser bundle contains 180 rows selected deterministically:
@@ -84,10 +100,12 @@ The official data release includes covariance products. They are intentionally n
 ```text
 index.html                   semantic application and methods narrative
 styles.css                  responsive visual system and accessible states
-app.js                      controls, charts, table, URL state, CSV export
+app.js                      controls, charts, carousel, theme, URL state, CSV export
 science-core.js             testable cosmology and likelihood functions
 physicsWorker.js            off-main-thread analysis adapter
 data/reference.json         pinned 180-row browser subset and provenance
+data/media-provenance.json  observatory-image sources, credits, and checksums
+assets/images/              locally cached NASA/ESA/STScI observation imagery
 scripts/build_reference_data.py
                              deterministic source acquisition
 scripts/test_science.js      numerical invariants and regression checks
