@@ -11,6 +11,7 @@ const required = [
   "science-core.js",
   "physicsWorker.js",
   "data/reference.json",
+  "data/media-provenance.json",
   "scripts/build_reference_data.py",
   "scripts/test_science.js"
 ];
@@ -33,9 +34,32 @@ for (const [index, point] of (reference.points || []).entries()) {
 }
 
 const html = fs.readFileSync("index.html", "utf8");
-const requiredHtml = ["profile likelihood", "diagonal", "full covariance", "data-table-body"];
+const requiredHtml = [
+  "What is a supernova?",
+  "profile likelihood",
+  "diagonal",
+  "systematic covariance",
+  "1,701",
+  "theme-toggle",
+  "observation-carousel",
+  "© 2026 Biswajit Jana",
+  "data-table-body"
+];
 for (const phrase of requiredHtml) if (!html.toLowerCase().includes(phrase.toLowerCase())) failures.push(`index.html missing required disclosure: ${phrase}`);
 if (html.includes("research-overlay.js")) failures.push("obsolete research overlay is still public");
+
+const media = JSON.parse(fs.readFileSync("data/media-provenance.json", "utf8"));
+if (!Array.isArray(media.assets) || media.assets.length < 4) failures.push("media manifest must contain at least four credited observations");
+for (const asset of media.assets || []) {
+  if (!fs.existsSync(asset.file)) {
+    failures.push(`credited media file missing: ${asset.file}`);
+    continue;
+  }
+  const digest = crypto.createHash("sha256").update(fs.readFileSync(asset.file)).digest("hex");
+  if (digest !== asset.sha256) failures.push(`media checksum mismatch: ${asset.file}`);
+  if (!/^https:\/\/(science\.nasa\.gov|svs\.gsfc\.nasa\.gov)\//.test(asset.source_page || "")) failures.push(`media source is not an approved official portal: ${asset.file}`);
+  if (!asset.credit || !asset.object || !asset.observatory) failures.push(`media attribution incomplete: ${asset.file}`);
+}
 
 const readme = fs.readFileSync("README.md", "utf8");
 for (const citation of reference.requiredCitations || []) {
