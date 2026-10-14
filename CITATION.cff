@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this research software, please cite it using this metadata."
+title: "Supernova Hubble Diagram Laboratory"
+abstract: "Learn how Type Ia supernovae become distance indicators, inspect real NASA and ESA observations, and explore a Pantheon+ Hubble-diagram likelihood in the browser."
+type: software
+authors:
+  - family-names: Jana
+    given-names: Biswajit
+repository-code: "https://github.com/Biswajit1999/supernova-hubble-diagram-lab"
+url: "https://biswajit1999.github.io/supernova-hubble-diagram-lab/"
+keywords:
+  - "astronomy"
+  - "astrophysics"
+  - "scientific computing"
+  - "Type Ia supernovae"
+  - "Hubble diagram"
+  - "cosmic expansion"
+  - "distance-redshift relation"
+  - "observational cosmology"
