@@ -20,5 +20,5 @@ jobs:
         with:
           node-version: "22"
       - run: python -m unittest discover -s tests -p test_sn_robustness.py -v
-      - run: python scripts/sn_robustness.py --output /tmp/sn_robustness.json
+      - run: python scripts/sn_robustness.py
       - run: npm run check
