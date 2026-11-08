@@ -1,0 +1,20 @@
+name: Scientific sensitivity audit
+on:
+  push:
+    branches:
+      - 'research/2026-11-08-*'
+  pull_request:
+  workflow_dispatch:
+jobs:
+  numerical-audit:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run independent analytic and numerical regression tests
+        run: python research/redshift_systematics_20261108.py -v
