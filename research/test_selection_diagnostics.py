@@ -20,4 +20,7 @@ class Tests(unittest.TestCase):
     def test_non_spd(self):
         with self.assertRaises(np.linalg.LinAlgError):
             profile_offset([1,2], [[1,2],[2,1]])
+    def test_rejects_asymmetric_covariance(self):
+        with self.assertRaisesRegex(ValueError, "covariance must be symmetric"):
+            profile_offset([1, 2], [[1, 0.8], [0.1, 1]])
 if __name__ == '__main__': unittest.main()

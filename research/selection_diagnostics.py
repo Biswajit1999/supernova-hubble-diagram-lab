@@ -7,6 +7,8 @@ def profile_offset(residual, covariance):
     c = np.asarray(covariance, dtype=float)
     if y.ndim != 1 or not len(y) or c.shape != (len(y), len(y)) or not np.all(np.isfinite(y)) or not np.all(np.isfinite(c)):
         raise ValueError('invalid residual or covariance')
+    if not np.allclose(c, c.T, rtol=1e-12, atol=0):
+        raise ValueError('covariance must be symmetric')
     l = np.linalg.cholesky(c)
     wy = np.linalg.solve(l, y)
     w1 = np.linalg.solve(l, np.ones_like(y))
