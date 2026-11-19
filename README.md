@@ -28,6 +28,10 @@ Light mode is the default scientific-reading surface, with a dark observatory mo
 
 ## Data provenance
 
+![Pantheon+SH0ES redshift versus distance modulus with diagonal error bars and the default low-redshift cut marked](assets/pantheon-subset.svg)
+
+The plot shows all 180 bundled light curves. The default browser fit selects the 168 at `zHD ≥ 0.010`. Bars are the released diagonal measurement uncertainties. [Download the plotted rows](data/reference.json), [read the covariance diagnostic](research/SELECTION_DIAGNOSTICS.md), or regenerate the figure with `python scripts/plot_pantheon_subset.py` after installing Matplotlib.
+
 The official Pantheon+SH0ES distance table contains 1,701 light curves for 1,550 distinct Type Ia supernovae, spanning approximately `z = 0.001–2.26`. The browser bundle contains 180 rows selected deterministically:
 
 1. Download `Pantheon+_Data/4_DISTANCES_AND_COVAR/Pantheon+SH0ES.dat` from the official release.
