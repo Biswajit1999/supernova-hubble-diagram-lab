@@ -380,3 +380,17 @@ td { color: var(--cell-text); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+.reference-figure {
+  margin: 0 0 1.5rem;
+  max-width: 840px;
+}
+.reference-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: .5rem;
+}
+.reference-figure figcaption {
+  margin-top: .75rem;
+  line-height: 1.6;
+}
